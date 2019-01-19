@@ -2,10 +2,13 @@
   "name": "8thlight-react",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "axios": "^0.18.0",
+    "concurrently": "^4.1.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "nodemon": "^1.18.9",
     "path": "^0.12.7",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -13,6 +16,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm start\"",
+    "server": "nodemon server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

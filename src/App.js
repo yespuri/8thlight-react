@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import BookGridComponent from './components/BookGridComponent';
+import SearchTitle from './components/SearchBar';
+
 import './App.css';
 
 class App extends Component {
+  state = {
+    gridView: true,
+    searchResults: {},
+  };
+
+  searchResults = React.createRef();
+
+  handleSearch = () => {
+    console.log('hello');
+  };
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <h1>8th Light Books Search</h1>
+
+          <SearchTitle ref={this.searchResults} onSearch={this.handleSearch} />
+
+          {/* <BookGridComponent /> */}
         </header>
       </div>
     );
