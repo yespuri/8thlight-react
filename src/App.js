@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import BookGridComponent from './components/BookGridComponent';
-import SearchTitle from './components/SearchBar';
+import SearchBooks from './components/SearchBar';
+import BooksContainer from './components/BooksContainer';
 
 import './App.css';
 
@@ -8,11 +8,10 @@ class App extends Component {
   state = {
     gridView: true,
     searchResults: {},
+    test: 'app.js',
   };
 
-  searchResults = React.createRef();
-
-  handleSearch = () => {
+  returnSearchResults = () => {
     console.log('hello');
   };
 
@@ -21,10 +20,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1>8th Light Books Search</h1>
-
-          <SearchTitle ref={this.searchResults} onSearch={this.handleSearch} />
-
-          {/* <BookGridComponent /> */}
+          <SearchBooks />
         </header>
       </div>
     );
