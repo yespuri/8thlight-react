@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import BookGrid from './BookGridComponent';
 
 export default class BooksContainer extends Component {
+  // onClick = () => {
+  //   console.log(this.props.books);
+  // };
   render() {
-    const searchResults = this.props.children.map(book => {
+    const searchResults = this.props.books.map(book => {
       return (
         <BookGrid
           img={book.volumeInfo.imageLinks.thumbnail}
@@ -14,6 +17,11 @@ export default class BooksContainer extends Component {
       );
     });
 
-    return <div>{searchResults}</div>;
+    return (
+      <div>
+        {/* <button onClick={this.onClick}>cLICK</button> */}
+        {this.props.books.length > 0 && searchResults}
+      </div>
+    );
   }
 }

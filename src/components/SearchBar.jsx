@@ -6,6 +6,7 @@ export default class searchBar extends Component {
     searchTitle: '',
     searchAuthor: '',
     searchResults: [],
+    itemSearched: false,
   };
 
   handleChange = e => {
@@ -19,6 +20,7 @@ export default class searchBar extends Component {
     let bookData = await fetch(`/api/search/${this.state.searchTitle}`);
     bookData = await bookData.json();
     await this.setState({ searchResults: bookData.items });
+    this.setState({ itemSearched: true });
   };
 
   render() {
@@ -33,7 +35,7 @@ export default class searchBar extends Component {
             </button>
           </form>
         </div>
-        <BooksContainer>{this.state.searchResults}</BooksContainer>
+        {this.state.itemSearched && <BooksContainer books={this.state.searchResults} />}
       </div>
     );
   }
