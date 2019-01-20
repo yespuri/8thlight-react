@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-import BookGrid from './BookGridComponent';
+import Book from './Book';
 
 export default class BooksContainer extends Component {
-  onClick = () => {
-    console.log(this.props.books);
-  };
+  // onClick = () => {
+  //   console.log(this.props.books);
+  // };
   render() {
     const searchResults = this.props.books.map(book => {
+      const { volumeInfo } = book;
       return (
-        <BookGrid
-          img={book.volumeInfo.imageLinks.thumbnail}
-          title={book.volumeInfo.title}
-          author={book.volumeInfo.authors[0]}
-          publisher={book.volumeInfo.publisher}
-        />
+        volumeInfo && (
+          <Book
+            img={volumeInfo.imageLinks && volumeInfo.imageLinks.thumbnail}
+            title={volumeInfo.title}
+            author={volumeInfo.authors}
+            publisher={volumeInfo.publisher}
+          />
+        )
       );
     });
 
     return (
       <div>
-        <button onClick={this.onClick}>cLICK</button>
+        {/* <button onClick={this.onClick}>cLICK</button> */}
         {searchResults}
       </div>
     );

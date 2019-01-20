@@ -13,14 +13,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/search/:keyword', (req, res) => {
-  console.log('get request backend');
   const apiKey = process.env.APIkey;
   const keyword = req.params.keyword.split(' ').join('+');
-  console.log(keyword);
-  console.log(apiKey);
   axios
     .get(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`)
-    .then(resp => res.send(resp.data));
+    .then(resp => res.send(resp.data))
+    .catch(err => {
+      console.log(err);
+      if (err) res.send(err);
+    });
 });
 
 app.listen(PORT, () => {

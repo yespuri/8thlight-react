@@ -5,12 +5,6 @@ import './App.css';
 import Api from './utils/Api';
 
 class App extends Component {
-  state = {
-    gridView: true,
-    searchResults: {},
-    test: 'app.js',
-  };
-
   render() {
     return (
       <div className="App">

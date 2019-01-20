@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import BooksContainer from './BooksContainer';
 
 export default class searchBar extends Component {
   state = {
     searchTitle: '',
     searchAuthor: '',
     searchResults: [],
+    searching: false,
   };
 
   handleInput = e => {
@@ -16,12 +16,18 @@ export default class searchBar extends Component {
 
   searchTitle = async e => {
     e.preventDefault();
-    await this.props.searchBooksApi(this, this.state.searchTitle);
+    this.setState({ searching: true });
+    try {
+      await this.props.searchBooksApi(this, this.state.searchTitle);
+    } catch (err) {
+      console.log(err);
+    }
+    this.setState({ searching: false });
   };
 
   render() {
     const { children } = this.props;
-    const childrenContainer = React.Children.map(children, child => {
+    const displayResults = React.Children.map(children, child => {
       return React.cloneElement(child, { books: this.state.searchResults });
     });
 
@@ -34,9 +40,10 @@ export default class searchBar extends Component {
             <button type="submit" onClick={this.searchTitle}>
               Search
             </button>
+            {this.state.searching ? <p>Searching...</p> : null}
           </form>
         </div>
-        {childrenContainer}
+        {displayResults}
       </div>
     );
   }
