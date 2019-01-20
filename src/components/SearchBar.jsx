@@ -17,11 +17,8 @@ export default class searchBar extends Component {
   searchTitle = async e => {
     e.preventDefault();
     this.setState({ searching: true });
-    try {
-      await this.props.searchBooksApi(this, this.state.searchTitle);
-    } catch (err) {
-      console.log(err);
-    }
+    let result = await this.props.api(this.state.searchTitle);
+    await this.setState({ searchResults: result.items });
     this.setState({ searching: false });
   };
 
@@ -35,7 +32,7 @@ export default class searchBar extends Component {
       <div className="search-area">
         <div className="search-bar">
           <form action="">
-            <label htmlFor="">Search Title:</label>
+            <label htmlFor="">Search {this.props.type}: </label>
             <input onChange={this.handleInput} type="text" value={this.state.searchTitle} />
             <button type="submit" onClick={this.searchTitle}>
               Search

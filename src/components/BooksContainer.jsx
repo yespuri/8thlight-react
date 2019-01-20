@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import './BooksContainer.css';
 
 export default class BooksContainer extends Component {
   // onClick = () => {
@@ -21,7 +22,7 @@ export default class BooksContainer extends Component {
     });
 
     return (
-      <div>
+      <div className="books-container">
         {/* <button onClick={this.onClick}>cLICK</button> */}
         {searchResults}
       </div>

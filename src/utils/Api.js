@@ -1,7 +1,11 @@
 export default {
-  searchBooks: async function(page, keyword) {
-    let bookData = await fetch(`/api/search/${keyword}`);
-    bookData = await bookData.json();
-    page.setState({ searchResults: bookData.items });
+  searchBooks: async function(keyword) {
+    try {
+      let bookData = await fetch(`/api/search/${keyword}`);
+      bookData = await bookData.json();
+      return bookData;
+    } catch (e) {
+      console.error(e);
+    }
   },
 };
