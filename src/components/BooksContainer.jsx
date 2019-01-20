@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import BookGrid from './BookGridComponent';
 
 export default class BooksContainer extends Component {
-  // onClick = () => {
-  //   console.log(this.props.books);
-  // };
+  onClick = () => {
+    console.log(this.props.books);
+  };
   render() {
     const searchResults = this.props.books.map(book => {
       return (
@@ -19,8 +19,8 @@ export default class BooksContainer extends Component {
 
     return (
       <div>
-        {/* <button onClick={this.onClick}>cLICK</button> */}
-        {this.props.books.length > 0 && searchResults}
+        <button onClick={this.onClick}>cLICK</button>
+        {searchResults}
       </div>
     );
   }
