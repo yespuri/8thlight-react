@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-export default class searchBar extends Component {
+export default class Search extends Component {
   state = {
     searchTitle: '',
-    searchAuthor: '',
     searchResults: [],
     searching: false,
   };
@@ -17,8 +16,13 @@ export default class searchBar extends Component {
   searchTitle = async e => {
     e.preventDefault();
     this.setState({ searching: true });
-    let result = await this.props.api(this.state.searchTitle);
-    await this.setState({ searchResults: result.items });
+    try {
+      let result = await this.props.api(this.state.searchTitle);
+      console.log(result);
+      await this.setState({ searchResults: result.items });
+    } catch (err) {
+      console.error(err);
+    }
     this.setState({ searching: false });
   };
 

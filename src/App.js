@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Search from './components/SearchBar';
-import BooksContainer from './components/BooksContainer';
+import Search from './components/searchBar';
+import BooksContainer from './components/booksContainer';
 import './App.css';
 import Api from './utils/Api';
 
@@ -10,7 +10,7 @@ class App extends Component {
       <div className="App">
         <h1>8th Light Books Search</h1>
         <Search type="Book Title" api={Api.searchBooks}>
-          <BooksContainer />
+          <BooksContainer api={Api.searchWiki} />
         </Search>
       </div>
     );

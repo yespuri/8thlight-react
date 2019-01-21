@@ -1,0 +1,10 @@
+.single-book {
+  border: 1px gray solid;
+  padding: 1rem;
+}
+
+.single-book > img {
+  margin: auto;
+  display: block;
+  object-fit: contain;
+}

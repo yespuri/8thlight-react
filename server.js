@@ -24,6 +24,20 @@ app.get('/api/search/:keyword', (req, res) => {
     });
 });
 
+app.get(`/api/wiki/:keyword`, (req, res) => {
+  const keyword = req.params.keyword;
+  console.log(req.params);
+  axios
+    .get(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
+    )
+    .then(resp => res.send(resp.data))
+    .catch(err => {
+      console.log(err);
+      if (err) res.send(err);
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
