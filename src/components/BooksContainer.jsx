@@ -6,6 +6,7 @@ export default class BooksContainer extends Component {
   render() {
     const searchResults = this.props.books.map(book => {
       const { volumeInfo } = book;
+
       return (
         volumeInfo && (
           <Book

@@ -12,30 +12,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.get('/api/search/:keyword', (req, res) => {
+async function bookApiRequest(keyword) {
   const apiKey = process.env.APIkey;
-  const keyword = req.params.keyword.split(' ').join('+');
-  axios
-    .get(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`)
-    .then(resp => res.send(resp.data))
-    .catch(err => {
-      console.log(err);
-      if (err) res.send(err);
-    });
-});
+  keyword = keyword.split(' ').join('+');
+  const result = await axios.get(
+    `https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`
+  );
+  return result.data;
+}
 
-app.get(`/api/wiki/:keyword`, (req, res) => {
+async function wikiRequest(keyword) {
+  const result = await axios.get(
+    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
+  );
+  return result.data;
+}
+
+app.get('/api/search/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
-  console.log(req.params);
-  axios
-    .get(
-      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
-    )
-    .then(resp => res.send(resp.data))
-    .catch(err => {
-      console.log(err);
-      if (err) res.send(err);
-    });
+  let resp = await Promise.all([bookApiRequest(keyword), wikiRequest(keyword)]);
+  console.log(resp);
 });
 
 app.listen(PORT, () => {
