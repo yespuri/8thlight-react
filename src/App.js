@@ -10,7 +10,7 @@ class App extends Component {
       <div className="App">
         <h1>8th Light Books Search</h1>
         <Search type="Book Title" api={Api.searchBooks}>
-          <BooksContainer api={Api.searchWiki} />
+          <BooksContainer />
         </Search>
       </div>
     );

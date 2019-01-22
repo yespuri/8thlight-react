@@ -16,22 +16,31 @@ async function bookApiRequest(keyword) {
   const apiKey = process.env.APIkey;
   keyword = keyword.split(' ').join('+');
   const result = await axios.get(
-    `https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`
+    encodeURI(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`)
   );
-  return result.data;
+  return result.data.items;
 }
 
 async function wikiRequest(keyword) {
   const result = await axios.get(
-    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
+    encodeURI(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
+    )
   );
-  return result.data;
+  // console.log(result.data);
+  return result.data.query.search[0];
 }
 
 app.get('/api/search/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
-  let resp = await Promise.all([bookApiRequest(keyword), wikiRequest(keyword)]);
-  console.log(resp);
+  let books = await bookApiRequest(keyword);
+  const resp = await Promise.all(
+    books.map(async book => {
+      book.wikiInfo = await wikiRequest(book.volumeInfo.title);
+      return book;
+    })
+  );
+  res.send(resp);
 });
 
 app.listen(PORT, () => {

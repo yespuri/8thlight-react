@@ -19,7 +19,7 @@ export default class Search extends Component {
     try {
       let result = await this.props.api(this.state.searchTitle);
       console.log(result);
-      await this.setState({ searchResults: result.items });
+      await this.setState({ searchResults: result });
     } catch (err) {
       console.error(err);
     }
@@ -29,7 +29,9 @@ export default class Search extends Component {
   render() {
     const { children } = this.props;
     const displayResults = React.Children.map(children, child => {
-      return React.cloneElement(child, { books: this.state.searchResults });
+      return React.cloneElement(child, {
+        books: this.state.searchResults,
+      });
     });
 
     return (
