@@ -1,6 +1,7 @@
 .single-book {
   border: 1px gray solid;
   padding: 1rem;
+  max-width: 300px;
 }
 
 .single-book > img {
