@@ -7,14 +7,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('/build'));
+  app.use(express.static('client/build'));
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
 } else {
   app.use(express.static(__dirname + '/public'));
 }
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'));
-});
 
 async function bookApiRequest(keyword) {
   keyword = encodeURIComponent(keyword);
