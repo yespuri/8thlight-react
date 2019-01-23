@@ -4,7 +4,7 @@ import './booksContainer.css';
 
 export default class BooksContainer extends Component {
   render() {
-    const searchResults = this.props.books.map(book => {
+    const searchResults = this.props.info.map(book => {
       const { volumeInfo } = book;
 
       return (
@@ -12,9 +12,9 @@ export default class BooksContainer extends Component {
           <Book
             img={volumeInfo.imageLinks && volumeInfo.imageLinks.thumbnail}
             title={volumeInfo.title}
-            author={volumeInfo.authors}
+            authors={volumeInfo.authors}
             publisher={volumeInfo.publisher}
-            isbn={volumeInfo.industryIdentifiers[0]}
+            isbn={volumeInfo.industryIdentifiers && volumeInfo.industryIdentifiers[0].identifier}
             wiki={book.wikiInfo.pageid}
           />
         )

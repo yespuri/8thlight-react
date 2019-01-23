@@ -2,31 +2,32 @@ import React, { Component } from 'react';
 import './book.css';
 
 export default class book extends Component {
-  state = {
-    wikiLink: '',
-  };
-
   render() {
-    const isbn = this.props.isbn.identifier;
+    let { title, img, isbn, authors, publisher, wiki } = this.props;
     return (
       <div className="single-book">
-        <img src={this.props.img} />
-        <h3>{this.props.title}</h3>
-        <p> Author(s): {this.props.author.map(author => `${author} `)} </p>
-        <p>Publisher: {this.props.publisher}</p>
-        <p>
-          ISBN:
-          <a href={`https://isbnsearch.org/isbn/${isbn}`}>{this.props.isbn.identifier}</a>
-        </p>
-        {this.props.wiki && (
-          <a href={`https://en.wikipedia.org/?curid=${this.props.wiki}`}>
+        <img src={img} />
+        <h3>{title}</h3>
+        <p>Author(s): {authors ? authors.join(' ') : 'N/A'}</p>
+        <p>Publisher: {publisher ? publisher : 'N/A'}</p>
+        {isbn && (
+          <p>
+            ISBN:
+            <a href={`https://isbnsearch.org/isbn/${isbn}`}>{isbn}</a>
+          </p>
+        )}
+        {wiki && (
+          <a
+            href={`https://en.wikipedia.org/w/index.php?title=Special:Search&search=${title} novel`}
+          >
             <img src="/images/Wikipedia_Icon.svg" />
           </a>
         )}
-
-        <a href={`https://www.amazon.com/s?k=${isbn}`}>
-          <img src="/images/amazon_Icon.png" />
-        </a>
+        {(authors || title) && (
+          <a href={`https://www.amazon.com/s?k=${title} book`}>
+            <img src="/images/amazon_Icon.png" />
+          </a>
+        )}
       </div>
     );
   }

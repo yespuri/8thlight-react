@@ -5,11 +5,14 @@ export default class Search extends Component {
     searchTitle: '',
     searchResults: [],
     searching: false,
+    validInput: false,
   };
 
   handleInput = e => {
+    const char = e.target.value;
+    // validateSearch(char);
     this.setState({
-      searchTitle: e.target.value,
+      searchTitle: char,
     });
   };
 
@@ -26,11 +29,16 @@ export default class Search extends Component {
     this.setState({ searching: false });
   };
 
+  validateSearch = char => {
+    const reqChar = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+    if (reqChar.includes(char)) this.setState({ validInput: true });
+  };
+
   render() {
     const { children } = this.props;
     const displayResults = React.Children.map(children, child => {
       return React.cloneElement(child, {
-        books: this.state.searchResults,
+        info: this.state.searchResults,
       });
     });
 

@@ -27,20 +27,26 @@ async function wikiRequest(keyword) {
       `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
     )
   );
-  // console.log(result.data);
+  console.log(result.data.query.search);
   return result.data.query.search[0];
 }
 
 app.get('/api/search/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
-  let books = await bookApiRequest(keyword);
-  const resp = await Promise.all(
-    books.map(async book => {
-      book.wikiInfo = await wikiRequest(book.volumeInfo.title);
-      return book;
-    })
-  );
-  res.send(resp);
+  console.log(keyword);
+  try {
+    let books = await bookApiRequest(keyword);
+    const resp = await Promise.all(
+      books.map(async book => {
+        book.wikiInfo = (await wikiRequest(book.volumeInfo.title)) || {};
+        return book;
+      })
+    );
+    console.log(resp.filter(i => !i.wikiInfo));
+    res.send(resp);
+  } catch (err) {
+    if (err) console.error(err);
+  }
 });
 
 app.listen(PORT, () => {
