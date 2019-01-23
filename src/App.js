@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BooksContainer from './components/booksContainer';
+import BooksContainer from 'booksContainer';
 import Search from './components/searchBar';
 import './App.css';
 import Api from './utils/Api';
