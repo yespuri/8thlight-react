@@ -16,14 +16,15 @@ export default class book extends Component {
             <a href={`https://isbnsearch.org/isbn/${isbn}`}>{isbn}</a>
           </p>
         )}
+
+        {/* search Wiki by title: <a href={`https://en.wikipedia.org/w/index.php?title=Special:Search&search=${title} novel`}> */}
+
         {wiki && (
-          <a
-            href={`https://en.wikipedia.org/w/index.php?title=Special:Search&search=${title} novel`}
-          >
+          <a href={`http://en.wikipedia.org/?curid=${wiki}`}>
             <img src="/images/Wikipedia_Icon.svg" />
           </a>
         )}
-        {(authors || title) && (
+        {title && (
           <a href={`https://www.amazon.com/s?k=${title} book`}>
             <img src="/images/amazon_Icon.png" />
           </a>

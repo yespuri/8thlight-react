@@ -13,37 +13,44 @@ app.get('/', (req, res) => {
 });
 
 async function bookApiRequest(keyword) {
+  keyword = encodeURIComponent(keyword);
   const apiKey = process.env.APIkey;
   keyword = keyword.split(' ').join('+');
   const result = await axios.get(
-    encodeURI(`https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`)
+    `https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`
   );
-  return result.data.items;
+  return result.data.items || { error: 'no results found' };
 }
 
 async function wikiRequest(keyword) {
+  keyword = encodeURIComponent(keyword);
   const result = await axios.get(
     encodeURI(
       `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
     )
   );
-  console.log(result.data.query.search);
-  return result.data.query.search[0];
+  // if (!result.data.query) console.log(keyword, result.data);
+  return result.data.query.search[0] || {};
 }
 
 app.get('/api/search/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
-  console.log(keyword);
+  // console.log(keyword);
   try {
     let books = await bookApiRequest(keyword);
-    const resp = await Promise.all(
-      books.map(async book => {
-        book.wikiInfo = (await wikiRequest(book.volumeInfo.title)) || {};
-        return book;
-      })
-    );
-    console.log(resp.filter(i => !i.wikiInfo));
-    res.send(resp);
+    // console.log(books);
+    if (books.error) {
+      res.send(books);
+    } else {
+      const resp = await Promise.all(
+        books.map(async book => {
+          book.wikiInfo = await wikiRequest(book.volumeInfo.title);
+          return book;
+        })
+      );
+      // console.log(resp.filter(i => !i.wikiInfo));
+      res.send(resp);
+    }
   } catch (err) {
     if (err) console.error(err);
   }
