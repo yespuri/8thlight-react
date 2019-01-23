@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import BooksContainer from './components/booksContainer';
-import Search from './components/searchBar';
+import BooksContainer from './components/booksContainer.jsx';
+import Search from './components/searchBar.jsx';
 import './App.css';
 import Api from './utils/Api';
 
