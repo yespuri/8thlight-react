@@ -6,15 +6,6 @@ require('dotenv').load();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-} else {
-  app.use(express.static(__dirname + '/public'));
-}
-
 async function bookApiRequest(keyword) {
   keyword = encodeURIComponent(keyword);
   const apiKey = process.env.APIkey;
@@ -38,7 +29,7 @@ async function wikiRequest(keyword) {
 
 app.get('/api/search/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
-  // console.log(keyword);
+  console.log('Searching: ', keyword);
   try {
     let books = await bookApiRequest(keyword);
     // console.log(books);
@@ -58,6 +49,19 @@ app.get('/api/search/:keyword', async (req, res) => {
     if (err) console.error(err);
   }
 });
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+} else {
+  app.use(express.static(__dirname + '/client/public'));
+  app.get('/', function(req, res) {
+    console.log('hitting index.html');
+    res.sendFile(path.join(__dirname, '/client/public/index.html'));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
