@@ -10,22 +10,25 @@ async function bookApiRequest(keyword) {
   keyword = encodeURIComponent(keyword);
   const apiKey = process.env.APIkey;
   keyword = keyword.split(' ').join('+');
-  const result = await axios.get(
+  const encodedURI = encodeURI(
     `https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`
   );
+  const result = await axios.get(encodedURI);
   return result.data.items || { error: 'no results found' };
 }
 
-async function wikiRequest(keyword) {
-  keyword = encodeURIComponent(keyword);
-  if (keyword.length > 300) keyword = keyword.substring(0, 295);
-  const result = await axios.get(
-    encodeURI(
-      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
-    )
+async function wikiRequest(title, author) {
+  if (title.length > 300) title = title.substring(0, 295);
+  const encodedURI = encodeURI(
+    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${title} ${author} novel&format=json`
   );
-  if (!result.data.query) console.log(keyword, result.data);
-  return result.data.query.search[0] || {};
+  const result = await axios.get(encodedURI);
+  const wikiInfo = result.data.query.search[0];
+  if (wikiInfo && wikiInfo.title.includes(title)) {
+    return wikiInfo;
+  } else {
+    return {};
+  }
 }
 
 app.get('/api/search/:keyword', async (req, res) => {
@@ -33,17 +36,18 @@ app.get('/api/search/:keyword', async (req, res) => {
   console.log('Searching: ', keyword);
   try {
     let books = await bookApiRequest(keyword);
-    // console.log(books);
     if (books.error) {
+      //Triggers the 'No results found...' text on the front
       res.send(books);
     } else {
+      //Adds the wiki info to the book object.
       const resp = await Promise.all(
         books.map(async book => {
-          book.wikiInfo = await wikiRequest(book.volumeInfo.title);
+          const author = book.volumeInfo.authors[0] || '';
+          book.wikiInfo = await wikiRequest(book.volumeInfo.title, author);
           return book;
         })
       );
-      // console.log(resp.filter(i => !i.wikiInfo));
       res.send(resp);
     }
   } catch (err) {
@@ -57,10 +61,9 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 } else {
-  app.use(express.static(__dirname + '/client/public'));
+  app.use(express.static(__dirname + 'client/public'));
   app.get('/', function(req, res) {
-    console.log('hitting index.html');
-    res.sendFile(path.join(__dirname, '/client/public/index.html'));
+    res.sendFile(path.join(__dirname, 'client/public/index.html'));
   });
 }
 

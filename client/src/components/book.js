@@ -6,7 +6,7 @@ export default class book extends Component {
     let { title, img, isbn, authors, publisher, wiki } = this.props;
     return (
       <div className="single-book">
-        <img src={img} />
+        <img src={img} alt={title} />
         <h3>{title}</h3>
         <p>Author(s): {authors ? authors.join(' ') : 'N/A'}</p>
         <p>Publisher: {publisher ? publisher : 'N/A'}</p>
@@ -16,17 +16,14 @@ export default class book extends Component {
             <a href={`https://isbnsearch.org/isbn/${isbn}`}>{isbn}</a>
           </p>
         )}
-
-        {/* search Wiki by title: <a href={`https://en.wikipedia.org/w/index.php?title=Special:Search&search=${title} novel`}> */}
-
         {wiki && (
           <a href={`http://en.wikipedia.org/?curid=${wiki}`}>
-            <img src="/images/Wikipedia_Icon.svg" />
+            <img src="/images/Wikipedia_Icon.svg" alt="wiki-icon" />
           </a>
         )}
         {title && (
           <a href={`https://www.amazon.com/s?k=${title} book`}>
-            <img src="/images/amazon_Icon.png" />
+            <img src="/images/amazon_Icon.png" alt="amazon-icon" />
           </a>
         )}
       </div>
