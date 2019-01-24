@@ -18,12 +18,13 @@ async function bookApiRequest(keyword) {
 
 async function wikiRequest(keyword) {
   keyword = encodeURIComponent(keyword);
+  if (keyword.length > 300) keyword = keyword.substring(0, 295);
   const result = await axios.get(
     encodeURI(
       `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${keyword}&format=json`
     )
   );
-  // if (!result.data.query) console.log(keyword, result.data);
+  if (!result.data.query) console.log(keyword, result.data);
   return result.data.query.search[0] || {};
 }
 
