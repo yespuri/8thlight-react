@@ -22,7 +22,7 @@ export default class Search extends Component {
     try {
       let keyword = encodeURIComponent(this.state.searchTitle);
       let result = await this.props.api(keyword);
-      if (result.error) {
+      if (!result.length) {
         this.setState({ noResults: true });
       } else {
         await this.setState({ searchResults: result });
