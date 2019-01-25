@@ -18,6 +18,7 @@ async function bookApiRequest(keyword) {
 }
 
 async function wikiRequest(title, author) {
+  //Wikipedia's API has a character limit of 300;
   if (title.length > 300) title = title.substring(0, 295);
   const encodedURI = encodeURI(
     `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${title} ${author} novel&format=json`
@@ -36,8 +37,8 @@ app.get('/api/search/:keyword', async (req, res) => {
   console.log('Searching: ', keyword);
   try {
     let books = await bookApiRequest(keyword);
+    //if no results found...
     if (books.error) {
-      //Triggers the 'No results found...' text on the front
       res.send(books);
     } else {
       //Adds the wiki info to the book object.
