@@ -7,33 +7,38 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 async function bookApiRequest(keyword) {
-  // keyword = encodeURIComponent(keyword);
-  console.log(keyword);
-  const apiKey = process.env.APIkey;
-  const encodedURI = encodeURI(
-    `https://www.googleapis.com/books/v1/volumes?q=${keyword}&key=${apiKey}`
-  );
-  console.log(encodedURI);
-  const result = await axios.get(encodedURI);
-  return result.data.items || [];
+  try {
+    const apiKey = process.env.APIkey;
+    const searchQuery = encodeURIComponent(keyword);
+    const result = await axios.get(
+      `https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&key=${apiKey}`
+    );
+    return result.data.items || [];
+  } catch (err) {
+    if (err) console.error(err);
+  }
 }
 
 async function wikiRequest(title, author) {
   //Wikipedia's API has a character limit of 300;
-  if (title.length > 300) title = title.substring(0, 295);
-  const encodedURI = encodeURI(
-    `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${title} ${author} novel&format=json`
-  );
-  const result = await axios.get(encodedURI);
-  const { search } = result.data.query;
-  if (!search.length || !search[0].title.includes(title)) return {};
-  return search[0];
+  try {
+    if (title.length > 300) title = title.substring(0, 295);
+    const searchQuery = encodeURIComponent(`${title} ${author}`);
+    const result = await axios.get(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery} novel&format=json`
+    );
+    if (!result.data.query) console.log(result.data);
+    const { search } = result.data.query;
+    return search && search.length && search[0].title.includes(title) ? search[0] : {};
+  } catch (err) {
+    if (err) console.error(err);
+  }
 }
 
 app.get('/api/search/:keyword', async (req, res) => {
-  const keyword = req.params.keyword;
-  console.log('Searching: ', keyword);
   try {
+    const keyword = req.params.keyword;
+    console.log('Searching: ', keyword);
     let books = await bookApiRequest(keyword);
     //if no results found...
     if (!books.length) {
@@ -42,7 +47,6 @@ app.get('/api/search/:keyword', async (req, res) => {
       //Adds the wiki info to the book object.
       const resp = await Promise.all(
         books.map(async book => {
-          // if (!book.volumeInfo.authors) console.log(book.volumeInfo);
           const author = (book.volumeInfo.authors && book.volumeInfo.authors[0]) || '';
           book.wikiInfo = await wikiRequest(book.volumeInfo.title, author);
           return book;
