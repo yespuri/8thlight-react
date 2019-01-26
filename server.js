@@ -20,16 +20,19 @@ async function bookApiRequest(keyword) {
 }
 
 async function wikiRequest(title, author) {
-  //Wikipedia's API has a character limit of 300;
   try {
-    if (title.length > 300) title = title.substring(0, 295);
+    title = title.toLowerCase();
     const searchQuery = encodeURIComponent(`${title} ${author}`);
+    //Wikipedia's API has a character limit of 300;
+    if (searchQuery.length > 300) searchQuery = searchQuery.substring(0, 299);
     const result = await axios.get(
-      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery} novel&format=json`
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${searchQuery} book&format=json`
     );
     if (!result.data.query) console.log(result.data);
     const { search } = result.data.query;
-    return search && search.length && search[0].title.includes(title) ? search[0] : {};
+    return search && search.length && search[0].title.toLowerCase().includes(title)
+      ? search[0]
+      : {};
   } catch (err) {
     if (err) console.error(err);
   }
