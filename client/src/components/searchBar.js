@@ -9,10 +9,7 @@ export default class Search extends Component {
   };
 
   handleInput = e => {
-    const char = e.target.value;
-    this.setState({
-      searchTitle: char,
-    });
+    this.setState({ searchTitle: e.target.value });
   };
 
   searchTitle = async e => {

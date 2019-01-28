@@ -15,6 +15,7 @@ export default class BooksContainer extends Component {
             publisher={volumeInfo.publisher}
             isbn={volumeInfo.industryIdentifiers && volumeInfo.industryIdentifiers[0].identifier}
             wiki={book.wikiInfo.pageid}
+            key={book.id}
           />
         )
       );

@@ -13,18 +13,30 @@ export default class book extends Component {
         {isbn && (
           <p>
             ISBN:
-            <a href={`https://isbnsearch.org/isbn/${isbn}`} target="_blank">
+            <a
+              href={`https://isbnsearch.org/isbn/${isbn}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {isbn}
             </a>
           </p>
         )}
         {wiki && (
-          <a href={`http://en.wikipedia.org/?curid=${wiki}`} target="_blank">
+          <a
+            href={`http://en.wikipedia.org/?curid=${wiki}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img src="/images/Wikipedia_Icon.svg" alt="wiki-icon" />
           </a>
         )}
         {title && (
-          <a href={`https://www.amazon.com/s?k=${title} book`} target="_blank">
+          <a
+            href={`https://www.amazon.com/s?k=${title} book`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img src="/images/amazon_Icon.png" alt="amazon-icon" />
           </a>
         )}

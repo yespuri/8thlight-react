@@ -30,9 +30,11 @@ async function wikiRequest(title, author) {
     );
     if (!result.data.query) console.log(result.data);
     const { search } = result.data.query;
-    return search && search.length && search[0].title.toLowerCase().includes(title)
-      ? search[0]
-      : {};
+    if (search && search.length && search[0].title.toLowerCase().includes(title)) {
+      return search[0];
+    } else {
+      return {};
+    }
   } catch (err) {
     if (err) console.error(err);
   }
