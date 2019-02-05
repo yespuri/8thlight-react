@@ -1,15 +1,14 @@
 const express = require('express');
 const routes = require('./routes');
-require('dotenv').load();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(routes);
-
-if (process.env.NODE_ENV === 'production') {
-  router.use(express.static('client/build'));
-}
 
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
