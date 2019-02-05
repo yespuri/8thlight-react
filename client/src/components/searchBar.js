@@ -20,7 +20,7 @@ export default class Search extends Component {
       let keyword = encodeURIComponent(this.state.searchTitle);
       let result = await this.props.api(keyword);
       if (!result.length) {
-        this.setState({ noResults: true });
+        this.setState({ noResults: true, searchResults: [] });
       } else {
         await this.setState({ searchResults: result });
       }
@@ -47,11 +47,11 @@ export default class Search extends Component {
             <button type="submit" onClick={this.searchTitle}>
               Search
             </button>
-            {this.state.searching ? <p>Searching...</p> : null}
-            {this.state.noResults ? <p>No results found. Please try again</p> : null}
+            {this.state.searching && <p>Searching...</p>}
+            {this.state.noResults && <p>No results found. Please try again</p>}
           </form>
         </div>
-        {displayResults}
+        {!this.state.noResults && displayResults}
       </div>
     );
   }
