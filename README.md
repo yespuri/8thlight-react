@@ -21,7 +21,7 @@ Here is a list of the node packages used, also found in the package.json.
   }
 ```
 
-If you want to run this code, you'll also need to register a Google API Key. A guide can be found [here](https://developers.google.com/books/docs/v1/using). In server.js you can then replace process.env.APIkey with your own key. Once the node packages are installed running `npm start` from the root folder will start the client and Node server.
+After cloning and installing packages, you'll need to register a Google API Key. A guide can be found [here](https://developers.google.com/books/docs/v1/using). In backend/services/bookService.js you can then replace process.env.APIkey with your own key. Once the node packages are installed running `npm start` from the root folder will start the client and Node server.
 
 ## Built With
 
