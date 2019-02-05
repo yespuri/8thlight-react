@@ -4,8 +4,16 @@ const path = require('path');
 
 router.use('/api', apiRoutes);
 
-router.use(function(req, res) {
-  res.sendFile(path.join(__dirname, '../client/public/index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  router.use(express.static('client/build'));
+  router.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+} else {
+  router.use(express.static(__dirname + 'client/public'));
+  router.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'client/public/index.html'));
+  });
+}
 
 module.exports = router;
