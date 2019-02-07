@@ -23,6 +23,10 @@ Here is a list of the node packages used, also found in the package.json.
 
 After cloning and installing packages, you'll need to register a Google API Key. A guide can be found [here](https://developers.google.com/books/docs/v1/using). In backend/services/bookService.js you can then replace process.env.APIkey with your own key. Once the node packages are installed running `npm start` from the root folder will start the client and Node server.
 
+## Testing
+
+Testing modules are written with Jest and Enzyme and can be found in the `__tests__` folder under src/components. You can run `npm test` from the root directory to initiate the tests.
+
 ## Built With
 
 - [ReactJS](https://reactjs.org/)
