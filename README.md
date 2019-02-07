@@ -4,28 +4,7 @@ This project is built in React with a Node backend and deployed on Heroku [here]
 
 ## Prerequisites
 
-Here is a list of the node packages used, also found in the package.json.
-
-```
-  "dependencies": {
-    "axios": "^0.18.0",
-    "concurrently": "^4.1.0",
-    "dotenv": "^6.2.0",
-    "express": "^4.16.4",
-    "if-env": "^1.0.4",
-    "nodemon": "^1.18.9",
-    "path": "^0.12.7",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.3"
-  }
-```
-
 After cloning and installing packages, you'll need to register a Google API Key. A guide can be found [here](https://developers.google.com/books/docs/v1/using). In backend/services/bookService.js you can then replace process.env.APIkey with your own key. Once the node packages are installed running `npm start` from the root folder will start the client and Node server.
-
-## Testing
-
-Testing modules are written with Jest and Enzyme and can be found in the `__tests__` folder under src/components. You can run `npm test` from the root directory to initiate the tests.
 
 ## Built With
 
@@ -49,3 +28,7 @@ After the request is made to Google Books, an array is returned. We use that arr
 When searching Google Books and Wikipedia I would run into the issues of irregular objects and unrelated search results, respectively. Google Book's objects didn't always have consistent keys, including some keys containing vital information such as ISBN. Even when the ISBN's were there, they weren't always correct, ie. they didn't match up with Amazon or other 3rd party sites. I added error handling to account for some irregular objects but I haven't looked at every edge case.
 
 Originally I had a Wikipedia icon that connected to the first search result that was returned. The problem with this is Wikipedia searches had a tendency to return pages that were not associated with the book title, so I added code to make sure it only returned an object if the titles were similar. A small issue here is books that have alternate titles. Take for example something like Harry Potter and the Sorcerer's Stone, where Wiki page uses the original title of "The Philosopher's Stone" resulting in a missing link. I thought this was the better alternative to having unrelated search results attached to each book.
+
+## Testing
+
+Testing modules are written with Jest and Enzyme and can be found in the `__tests__` folder under src/components. You can run `npm test` from the root directory to initiate the tests.

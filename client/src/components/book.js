@@ -8,7 +8,7 @@ export default class book extends Component {
       <div className="single-book">
         <img src={img} alt={title} />
         <h3>{title}</h3>
-        <p>Author(s): {authors ? authors.join(' ') : 'N/A'}</p>
+        <p>Author(s): {authors ? authors.join(', ') : 'N/A'}</p>
         <p>Publisher: {publisher ? publisher : 'N/A'}</p>
         {isbn && (
           <p>
