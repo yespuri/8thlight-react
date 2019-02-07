@@ -22,6 +22,7 @@ export default class Search extends Component {
       if (!result.length) {
         this.setState({ noResults: true, searchResults: [] });
       } else {
+        console.log(result);
         await this.setState({ searchResults: result });
       }
     } catch (err) {
