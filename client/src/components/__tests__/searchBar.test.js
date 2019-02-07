@@ -1,9 +1,10 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import SearchBar from '../../components/searchBar';
 
 test('renders without crashing', async () => {
-  shallow(<SearchBar />);
+  const wrapper = shallow(<SearchBar />);
+  expect(wrapper.exists()).toBe(true);
 });
 
 test('input value reflects state', () => {
@@ -28,6 +29,5 @@ test('searching status', () => {
   let apiCall = jest.fn();
   let wrapper = shallow(<SearchBar api={apiCall} />);
   wrapper.setState({ searching: true });
-  // expect(wrapper.find('p').text()).toBe('Searching...');
-  expect(wrapper.state('searching')).toBe(true);
+  expect(wrapper.find('p').text()).toBe('Searching...');
 });

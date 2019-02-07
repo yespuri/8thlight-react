@@ -4,5 +4,6 @@ import BookContainer from '../../components/booksContainer';
 
 test('renders without crashing', () => {
   const books = [{ wikiInfo: { pageid: 2 }, volumeInfo: { title: 'test' } }];
-  shallow(<BookContainer info={books} />);
+  const wrapper = shallow(<BookContainer info={books} />);
+  expect(wrapper.exists()).toBe(true);
 });
